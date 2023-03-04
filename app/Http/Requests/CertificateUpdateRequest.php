@@ -28,7 +28,12 @@ class CertificateUpdateRequest extends FormRequest
             'name' => ['sometimes', 'string'],
             'whom' => ['sometimes', 'string'],
             'date' => ['sometimes', 'date'],
-
+            'file' => [
+                'file',
+                'sometimes',
+                'mimes:jpg,jpeg,png,pdf,doc,docx',
+                'max:52428800'
+            ],
         ];
     }
 }

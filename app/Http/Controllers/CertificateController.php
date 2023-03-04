@@ -9,6 +9,7 @@ use App\Models\Certificate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class CertificateController extends Controller
 {
@@ -35,19 +36,33 @@ class CertificateController extends Controller
         return view('Admin.new_certificate');
     }
 
+    public function editFormData($id)
+    {
+        $certificate = $this->model->query()->find($id);
+        return view('Admin.edit_certificate', compact('certificate', $certificate));
+    }
+
+//    public function edit($id, CertificateInsertRequest $request)
+//    {
+//        $model = $this->model->query()->find($id);
+//        $data = $request->all();
+//        DB::beginTransaction();
+//        try {
+//            $model->update($data);
+//            DB::connection()->commit();
+//        } catch (\Exception $exception) {
+//            DB::connection()->rollBack();
+//        }
+//        return Redirect()->route('all.certificates');
+//
+//    }
+
     public function store(CertificateInsertRequest $request)
     {
         $data = $request->all();
         DB::beginTransaction();
         try {
-            $file = $data['file'];
-            unset($data['file']);
-            $extension = $file->getClientOriginalExtension();
-            $name = Str::uuid();
-            $data['file_id'] = $name . '.' . $extension;
-            $data['file_name'] = $file->getClientOriginalName();
-            Storage::putFileAs('/certificates/', $file, $data['file_id']);
-
+            $data['uuid'] = Str::uuid()->toString();
             $this->model->query()->create($data);
             DB::connection()->commit();
         } catch (\Exception $exception) {
@@ -63,23 +78,39 @@ class CertificateController extends Controller
         return $model ?? response('Not found', 404);
     }
 
-    public function update($id, CertificateUpdateRequest $request)
+    public function edit($id, CertificateUpdateRequest $request)
     {
         $data = $request->all();
         $model = $this->model->query()->find($id);
         if ($model) {
             DB::beginTransaction();
             try {
+                if ($model->file_id) {
+                    $path = '/certificates/' . $model->file_id;
+                    Storage::delete($path);
+                }
+
+                $file = $data['file'];
+                unset($data['file']);
+                $extension = $file->getClientOriginalExtension();
+                $name = Str::uuid();
+                $data['file_id'] = $name . '.' . $extension;
+                $data['file_name'] = $file->getClientOriginalName();
+                $model->update($data);
+                Storage::putFileAs('/certificates/', $file, $data['file_id']);
+
                 $model->update($data);
                 DB::connection()->commit();
 
-                return $model;
             } catch (\Exception $exception) {
                 DB::connection()->rollBack();
-                return $exception->getMessage();
             }
+
+            return Redirect()->route('all.certificates');
         } else
+
             return response('Not found', 404);
+
     }
 
     public function upload(CertificateFileRequest $fileRequest)
@@ -89,10 +120,8 @@ class CertificateController extends Controller
         unset($data['certificate_id']);
         if ($model) {
             if ($model->file_id) {
-                if ($model->file_id) {
-                    $path = '/certificates/' . $model->file_id;
-                    Storage::delete($path);
-                }
+                $path = '/certificates/' . $model->file_id;
+                Storage::delete($path);
             }
             $file = $data['file'];
             unset($data['file']);
@@ -121,10 +150,37 @@ class CertificateController extends Controller
             return response('Not found', 404);
     }
 
+    public function checkCertificate($id)
+    {
+        $model = $this->model->query()->where('uuid', $id)->first();
+        if ($model) {
+            if ($model->file_id) {
+                $path = '/certificates/' . $model->file_id;
+                return Storage::download($path);
+            } else
+                return response('The certificate file has not been uploaded yet', 404);
+        } else
+            return response('Certificate not found', 404);
+    }
+
+    public function qrcode($id)
+    {
+        $model = $this->model->query()->find($id);
+        if ($model) {
+            $url = 'http://127.0.0.1:8000/generate-qrcode/';
+//            $url = 'http://admin.holding.uz/generate-qrcode/';
+            $qrcode = $url . $model->uuid;
+            return QrCode::encoding('UTF-8')->format('png')->generate($qrcode);
+
+        } else
+            return response('Not found', 404);
+    }
+
     public function destroy($id)
     {
         $model = $this->model->query()->find($id);
         if ($model) {
+            if ($model->file_id) Storage::delete('/certificates/' . $model->file_id);
             $model->delete();
             return Redirect()->route('all.certificates');
         } else

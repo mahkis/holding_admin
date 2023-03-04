@@ -3,7 +3,7 @@
     <div class="card mb-4">
         <div class="card-header">
             <a class="btn btn-sm btn-info" href="{{ route('new.certificate')}}">
-                <i class="fas fa-plus mr-1"></i> New Certificate
+                <i class="fas fa-plus mr-1"></i> Добавить сертификат
             </a>
         </div>
         <div class="card-body">
@@ -12,12 +12,12 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Certificate number</th>
-                        <th>Certificate name</th>
-                        <th>Person name</th>
-                        <th>Date</th>
-                        <th>Download certificate</th>
-                        <th></th>
+                        <th>Предприятия</th>
+                        <th>Область применения. <br>в разрезе отраслей</th>
+                        <th>Номер сертификата</th>
+                        <th width="160">Дата</th>
+                        <th width="100"></th>
+                        <th width="50"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -25,28 +25,48 @@
                     @foreach($certificates as $key => $row)
                         <tr>
                             <td>{{ ++$key }}</td>
-                            <td>{{ $row->number}}</td>
-                            <td>{{ $row->name }}</td>
-                            <td>{{ $row->whom }}</td>
-                            <td>{{ $row->date }}</td>
+                            <td>
+                                {{ $row->whom}} <br>
+                                <span class=" text-secondary">
+                                    {{ $row->region}} <br>
+                                    {{ $row->address}} <br>
+                                    {{ $row->inn}}  <br>
+                                </span>
+                            </td>
+                            <td>
+                                {{ $row->application_area }} <br>
+                                <span class=" text-secondary">
+                                    {{ $row->by_industry }}
+                                </span>
+                            </td>
+                            <td>
+                                {{ $row->name }} <br>
+                                {{ $row->number }}
+                            </td>
+                            <td>
+                                {{ $row->date }} <br>
+                                {{ $row->expired_date }}
+                            </td>
+
+                            <td width="100">
+                                <img
+                                    src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate('https://admin.holding.uz/generate-qrcode/'.$row->uuid)) !!} ">
+                            </td>
                             <td>
                                 @if($row->file_id)
                                     <a href="{{url('/download-certificate/'.$row->id)}}"
-                                       class="btn btn-sm btn-info">
+                                       class="btn btn-sm btn-info mb-1">
                                         <i class="fa fa-download"></i>
-                                        Download certificate
                                     </a>
                                 @endif
-                            </td>
-                            <td>
-                                {{--                                <a href="{{ 'delete-certificate/'.$row->id }}" class="btn btn-sm btn-danger">--}}
-                                {{--                                    <i class="fa fa-trash"></i>--}}
-                                {{--                                </a>--}}
-                                <button class="btn btn-sm btn-danger"
+                                <a class="btn btn-sm btn-outline-info mb-1"
+                                   href="{{ route('edit.certificate', $row->id)}}">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                <button class="btn btn-sm btn-outline-danger mb-1"
                                         onclick="loadDeleteModal({{ $row->id }})">
-                                    <i class="fa fa-trash"></i>
+                                    <i class="fa fa-trash-alt "></i>
                                 </button>
-
                             </td>
                         </tr>
                     @endforeach
@@ -65,12 +85,12 @@
                     @csrf
                     @method('DELETE')
                     <div class="modal-header justify-content-center">
-                        <h4 class="title" id="defaultModalLabel">Are you sure?</h4>
+                        <h4 class="title" id="defaultModalLabel">Вы уверены?</h4>
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button type="submit" class="btn btn-danger btn-round waves-effect">Yes, delete</button>
+                        <button type="submit" class="btn btn-danger btn-round waves-effect">Да, удалить</button>
                         <button type="button" class="btn btn-outline-secondary btn-round waves-effect"
-                                data-dismiss="modal">Cancel
+                                data-dismiss="modal">Отмена
                         </button>
                     </div>
                 </form>
@@ -99,45 +119,4 @@
             $('#deleteModal').modal('show');
         }
     </script>
-    {{--   --}}
-
-
-    {{--   $('#dataTable').DataTable({--}}
-    {{--    columnDefs: [--}}
-    {{--    {bSortable: false, targets: [6]} --}}
-    {{--  ],--}}
-    {{--                dom: 'lBfrtip',--}}
-    {{--           buttons: [--}}
-    {{--               {--}}
-    {{--                   extend: 'copyHtml5',--}}
-    {{--                   exportOptions: {--}}
-    {{--                    modifier: {--}}
-    {{--                        page: 'current'--}}
-    {{--                    },--}}
-    {{--                       columns: [ 0, ':visible' ]--}}
-    {{--                       --}}
-    {{--                   }--}}
-    {{--               },--}}
-    {{--               {--}}
-    {{--                   extend: 'excelHtml5',--}}
-    {{--                   exportOptions: {--}}
-    {{--                    modifier: {--}}
-    {{--                        page: 'current'--}}
-    {{--                    },--}}
-    {{--                    columns: [ 0, ':visible' ]--}}
-    {{--                   }--}}
-    {{--               },--}}
-    {{--               {--}}
-    {{--                   extend: 'pdfHtml5',--}}
-    {{--                   exportOptions: {--}}
-    {{--                    modifier: {--}}
-    {{--                        page: 'current'--}}
-    {{--                    },--}}
-    {{--                       columns: [ 0, 1, 2, 5 ]--}}
-    {{--                   }--}}
-    {{--               },--}}
-    {{--               'colvis'--}}
-    {{--           ]--}}
-    {{--           });--}}
-    {{--       </script>--}}
 @endsection

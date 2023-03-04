@@ -25,7 +25,7 @@
                     </div>
 
                     <div class="signin-form">
-                        <h2 class="form-title">Sign In</h2>
+                        <h2 class="form-title">Добро пожаловать</h2>
                         <form method="POST" action="{{ route('login') }}" class="register-form" id="login-form">
                         @csrf
                             <div class="form-group">
@@ -38,10 +38,10 @@
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
-                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Запомнить</label>
                             </div>
                             <div class="form-group form-button">
-                                <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Войти"/>
                             </div>
                         </form>
 

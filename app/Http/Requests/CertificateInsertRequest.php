@@ -28,12 +28,6 @@ class CertificateInsertRequest extends FormRequest
             'name' => ['required', 'string'],
             'whom' => ['required', 'string'],
             'date' => ['required', 'date'],
-            'file' => [
-                'file',
-                'sometimes',
-                'mimes:jpg,jpeg,png,pdf,doc,docx',
-                'max:52428800'
-            ],
         ];
     }
 }
