@@ -42,21 +42,6 @@ class CertificateController extends Controller
         return view('Admin.edit_certificate', compact('certificate', $certificate));
     }
 
-//    public function edit($id, CertificateInsertRequest $request)
-//    {
-//        $model = $this->model->query()->find($id);
-//        $data = $request->all();
-//        DB::beginTransaction();
-//        try {
-//            $model->update($data);
-//            DB::connection()->commit();
-//        } catch (\Exception $exception) {
-//            DB::connection()->rollBack();
-//        }
-//        return Redirect()->route('all.certificates');
-//
-//    }
-
     public function store(CertificateInsertRequest $request)
     {
         $data = $request->all();
@@ -67,6 +52,7 @@ class CertificateController extends Controller
             DB::connection()->commit();
         } catch (\Exception $exception) {
             DB::connection()->rollBack();
+            return response($exception->getMessage(), 501);
         }
         return Redirect()->route('all.certificates');
 
@@ -104,6 +90,7 @@ class CertificateController extends Controller
 
             } catch (\Exception $exception) {
                 DB::connection()->rollBack();
+                return response($exception->getMessage(), 501);
             }
 
             return Redirect()->route('all.certificates');

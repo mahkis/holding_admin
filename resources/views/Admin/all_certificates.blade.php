@@ -50,7 +50,7 @@
 
                             <td width="100">
                                 <img
-                                    src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate('https://admin.holding.uz/generate-qrcode/'.$row->uuid)) !!} ">
+                                    src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate('https://admin.holding.uz/check-certificate/'.$row->uuid)) !!} ">
                             </td>
                             <td>
                                 @if($row->file_id)
