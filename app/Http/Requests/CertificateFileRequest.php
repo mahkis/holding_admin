@@ -28,7 +28,7 @@ class CertificateFileRequest extends FormRequest
             'file' => [
                 'file',
                 'sometimes',
-                'mimes:jpg,jpeg,png,pdf,doc,docx',
+                'mimes:jpg,jpeg,png,pdf',
                 'max:52428800'
             ],
         ];
