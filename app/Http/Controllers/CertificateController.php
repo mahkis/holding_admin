@@ -148,6 +148,8 @@ class CertificateController extends Controller
                 return response('The certificate file has not been uploaded yet', 404);
         } else
             return response('Certificate not found', 404);
+
+
     }
 
     public function qrcode($id)
