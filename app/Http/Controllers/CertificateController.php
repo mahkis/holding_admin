@@ -142,7 +142,7 @@ class CertificateController extends Controller
         $model = $this->model->query()->where('uuid', $id)->first();
         if ($model) {
             if ($model->file_id) {
-                $path = 'app/certificates/' . $model->file_id;
+                $path = 'certificates/' . $model->file_id;
 //                return Storage::download($path);
                 return view('show_certificate', [
                     'certificate' => $model,
