@@ -142,8 +142,12 @@ class CertificateController extends Controller
         $model = $this->model->query()->where('uuid', $id)->first();
         if ($model) {
             if ($model->file_id) {
-                $path = '/certificates/' . $model->file_id;
-                return Storage::download($path);
+                $path = 'app/certificates/' . $model->file_id;
+//                return Storage::download($path);
+                return view('show_certificate', [
+                    'certificate' => $model,
+                    'path' => $path,
+                ]);
             } else
                 return response('The certificate file has not been uploaded yet', 404);
         } else
