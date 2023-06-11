@@ -419,7 +419,7 @@
                     <div class="ml-12">
                         {{public_path($path)}}
                         <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                            <iframe src="{{ storage_path($path) }}"
+                            <iframe src="{{ public_path($path) }}"
                                     style="width:1024px; height:1000px;"></iframe>
 
                         </div>
