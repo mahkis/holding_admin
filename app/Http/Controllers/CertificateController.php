@@ -6,7 +6,6 @@ use App\Http\Requests\CertificateFileRequest;
 use App\Http\Requests\CertificateInsertRequest;
 use App\Http\Requests\CertificateUpdateRequest;
 use App\Models\Certificate;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -24,6 +23,20 @@ class CertificateController extends Controller
     public function index()
     {
         return $this->model->query()->get();
+    }
+
+    public function certificates()
+    {
+        $count = request('count') ?? 10;
+        $search = request('search') ?? null;
+        $model = $this->model->query();
+        if ($search) {
+            $model->where('whom', 'like', '%' . $search . '%');
+        }
+        $model->whereNotNull('file_id');
+
+        $data = $model->inRandomOrder()->limit($count)->get();
+        return json_encode($data);
     }
 
     public function certificatesData()
