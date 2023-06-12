@@ -6,6 +6,7 @@ use App\Http\Requests\CertificateFileRequest;
 use App\Http\Requests\CertificateInsertRequest;
 use App\Http\Requests\CertificateUpdateRequest;
 use App\Models\Certificate;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -142,12 +143,13 @@ class CertificateController extends Controller
         $model = $this->model->query()->where('uuid', $id)->first();
         if ($model) {
             if ($model->file_id) {
-                $path = 'app/public/certificates/' . $model->file_id;
+                $path = 'app/certificates/' . $model->file_id;
 //                return Storage::download($path);
-                return view('show_certificate', [
-                    'certificate' => $model,
-                    'path' => $path,
-                ]);
+//                return view('show_certificate', [
+//                    'certificate' => $model,
+//                    'path' => $path,
+//                ]);
+                return response()->file(storage_path($path));
             } else
                 return response('The certificate file has not been uploaded yet', 404);
         } else
