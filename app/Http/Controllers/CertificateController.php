@@ -31,7 +31,8 @@ class CertificateController extends Controller
         $search = request('search') ?? null;
         $model = $this->model->query();
         if ($search) {
-            $model->where('whom', 'like', '%' . $search . '%');
+            $model->where('inn', 'like', '%' . $search . '%')
+                ->orWhere('number', 'like', '%' . $search . '%');
         }
         $model->whereNotNull('file_id');
 
