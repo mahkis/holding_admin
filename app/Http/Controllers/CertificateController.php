@@ -86,7 +86,7 @@ class CertificateController extends Controller
             DB::beginTransaction();
             try {
                 if ($model->file_id) {
-                    $path = '/certificates/' . $model->file_id;
+                    $path = '/public/' . $model->file_id;
                     Storage::delete($path);
                 }
 
@@ -97,7 +97,7 @@ class CertificateController extends Controller
                 $data['file_id'] = $name . '.' . $extension;
                 $data['file_name'] = $file->getClientOriginalName();
                 $model->update($data);
-                Storage::putFileAs('/certificates/', $file, $data['file_id']);
+                Storage::putFileAs('/public/', $file, $data['file_id']);
 
                 $model->update($data);
                 DB::connection()->commit();
@@ -121,7 +121,7 @@ class CertificateController extends Controller
         unset($data['certificate_id']);
         if ($model) {
             if ($model->file_id) {
-                $path = '/certificates/' . $model->file_id;
+                $path = '/public/' . $model->file_id;
                 Storage::delete($path);
             }
             $file = $data['file'];
@@ -131,7 +131,7 @@ class CertificateController extends Controller
             $data['file_id'] = $name . '.' . $extension;
             $data['file_name'] = $file->getClientOriginalName();
             $model->update($data);
-            Storage::putFileAs('/certificates/', $file, $data['file_id']);
+            Storage::putFileAs('/public/', $file, $data['file_id']);
 
             return $model;
         } else
@@ -143,7 +143,7 @@ class CertificateController extends Controller
         $model = $this->model->query()->find($id);
         if ($model) {
             if ($model->file_id) {
-                $path = '/certificates/' . $model->file_id;
+                $path = '/public/' . $model->file_id;
                 return Storage::download($path);
             } else
                 return response('File not exists', 404);
@@ -156,13 +156,9 @@ class CertificateController extends Controller
         $model = $this->model->query()->where('uuid', $id)->first();
         if ($model) {
             if ($model->file_id) {
-                $path = 'app/certificates/' . $model->file_id;
-//                return Storage::download($path);
-//                return view('show_certificate', [
-//                    'certificate' => $model,
-//                    'path' => $path,
-//                ]);
-                return response()->file(storage_path($path));
+                $path = Storage::url($model->file_id);
+                $certificate = $model;
+                return view('show_certificate', compact('path', 'certificate'));
             } else
                 return response('The certificate file has not been uploaded yet', 404);
         } else
@@ -175,8 +171,8 @@ class CertificateController extends Controller
     {
         $model = $this->model->query()->find($id);
         if ($model) {
-            $url = 'http://127.0.0.1:8000/generate-qrcode/';
-//            $url = 'http://admin.holding.uz/generate-qrcode/';
+//            $url = 'http://127.0.0.1:8000/generate-qrcode/';
+            $url = 'http://admin.holding.uz/generate-qrcode/';
             $qrcode = $url . $model->uuid;
             return QrCode::encoding('UTF-8')->format('png')->generate($qrcode);
 
@@ -188,7 +184,7 @@ class CertificateController extends Controller
     {
         $model = $this->model->query()->find($id);
         if ($model) {
-            if ($model->file_id) Storage::delete('/certificates/' . $model->file_id);
+            if ($model->file_id) Storage::delete('/public/' . $model->file_id);
             $model->delete();
             return Redirect()->route('all.certificates');
         } else

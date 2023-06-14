@@ -407,25 +407,20 @@
                     <div class="flex items-center">
                         <div class="ml-4">
                             <span class="text-lg leading-7 font-semibold">
-                                {{ $certificate->whom}} <br>
+                                <b> {{ $certificate->whom }} </b><br>
+{{--                                <b> {{ $path }} </b><br>--}}
                             </span>
                             <span class="text-lg leading-7 font-semibold">
-                                {{ $certificate->name }} <br>
-                                {{ $certificate->number }} <br>
+                                <b>Имя сертификата: </b> {{ $certificate->name }} <br>
+                                <b>Номер сертификата: </b> {{ $certificate->number }} <br>
+                                <b>ИНН: </b> {{ $certificate->inn }} <br><br>
                             </span>
                         </div>
                     </div>
 
-                    <div class="ml-12">
-                        <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                            <iframe src="{{asset(storage_path($path))}}"
-                                    style="width:1024px; height:1000px;"></iframe>
-
-                        </div>
-                        <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                            <iframe src="https://www.africau.edu/images/default/sample.pdf"
-                                    style="width:1024px; height:1000px;"></iframe>
-
+                    <div class="">
+                        <div>
+                            <iframe src="{{ asset($path) }}" style="width:1024px; height:1000px;"></iframe>
                         </div>
                     </div>
                 </div>
