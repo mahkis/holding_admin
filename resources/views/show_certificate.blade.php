@@ -404,20 +404,6 @@
         <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
             <div class="grid grid-cols-1 ">
                 <div class="p-6">
-                    <div class="flex items-center">
-                        <div class="ml-4">
-                            <span class="text-lg leading-7 font-semibold">
-                                <b> {{ $certificate->whom }} </b><br>
-{{--                                <b> {{ $path }} </b><br>--}}
-                            </span>
-                            <span class="text-lg leading-7 font-semibold">
-                                <b>Имя сертификата: </b> {{ $certificate->name }} <br>
-                                <b>Номер сертификата: </b> {{ $certificate->number }} <br>
-                                <b>ИНН: </b> {{ $certificate->inn }} <br><br>
-                            </span>
-                        </div>
-                    </div>
-
                     <div class="">
                         <div>
                             <iframe src="{{ asset($path) }}" style="width:1024px; height:1000px;"></iframe>
