@@ -185,7 +185,7 @@ class CertificateController extends Controller
 //            $url = 'http://127.0.0.1:8000/generate-qrcode/';
             $url = 'http://admin.holding.uz/generate-qrcode/';
             $qrcode = $url . $model->uuid;
-            return QrCode::encoding('UTF-8')->format('png')->generate($qrcode);
+            return QrCode::format('png')->generate($qrcode);
 
         } else
             return response('Not found', 404);

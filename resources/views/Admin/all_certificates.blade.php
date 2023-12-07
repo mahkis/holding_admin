@@ -48,12 +48,12 @@
                                 {{ $row->expired_date }}
                             </td>
 
-                            <td width="100">
-{{--                                <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate('https://admin.holding.uz/check-certificate/'.$row->uuid)) !!} ">--}}
-                                <a href="{{url('/download-qrcode/'.$row->id)}}"
-                                   class="btn btn-sm btn-info mb-1">
-                                    <i class="fa fa-download"></i>
-                                </a>
+                            <td width="100" class="text-center align-items-center">
+{{--                                                                <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate('https://admin.holding.uz/check-certificate/'.$row->uuid)) !!} ">--}}
+                                <button class="btn btn-sm btn-outline-success mb-1"
+                                        onclick="loadQrcodeModal({{ $row->id }})">
+                                    <i class="fa fa-2x fa-qrcode "></i>
+                                </button>
                             </td>
                             <td>
                                 @if($row->file_id)
@@ -101,6 +101,20 @@
         </div>
     </div>
 
+    <div class="modal fade" id="qrcodeModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="" method="post" id="qrcodeFormClient">
+                    @csrf
+                    @method('GET')
+                    <div class="my-5 modal-body text-center justify-content-center align-content-center">
+                        <img width="300px" id="qrcode" src="">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('script')
@@ -120,6 +134,15 @@
             console.log(route);
             $('#deleteFormClient').attr('action', route);
             $('#deleteModal').modal('show');
+        }
+
+        function loadQrcodeModal(id) {
+            const src = "data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate(":path")) !!}";
+            const path = 'https://admin.holding.uz/check-certificate/' + id;
+            var route = src.replace(':path', path);
+            console.log(route);
+            $('#qrcode').attr('src', route);
+            $('#qrcodeModal').modal('show');
         }
     </script>
 @endsection
