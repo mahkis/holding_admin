@@ -28,6 +28,7 @@ Route::get('/edit-certificate/{id}', [CertificateController::class, 'editFormDat
 Route::put('/update-certificate/{id}', [CertificateController::class, 'edit'])->middleware(['auth'])->name('update.certificate');
 
 Route::get('/download-certificate/{id}', [CertificateController::class, 'download'])->middleware(['auth']);
+Route::get('/download-qrcode/{id}', [CertificateController::class, 'downloadqr'])->middleware(['auth']);
 Route::get('/generate-qrcode/{id}', [CertificateController::class, 'qrcode'])->middleware(['auth']);
 Route::delete('/delete-certificate/{id}', [CertificateController::class, 'destroy'])->name('delete.certificate')->middleware(['auth']);
 Route::delete('/delete-certificate-file/{id}', [CertificateController::class, 'destroyFile'])->name('delete.certificate.file')->middleware(['auth']);
