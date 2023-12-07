@@ -49,7 +49,11 @@
                             </td>
 
                             <td width="100">
-                                <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate('https://admin.holding.uz/check-certificate/'.$row->uuid)) !!} ">
+{{--                                <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate('https://admin.holding.uz/check-certificate/'.$row->uuid)) !!} ">--}}
+                                <a href="{{url('/download-qrcode/'.$row->id)}}"
+                                   class="btn btn-sm btn-info mb-1">
+                                    <i class="fa fa-download"></i>
+                                </a>
                             </td>
                             <td>
                                 @if($row->file_id)
