@@ -5,9 +5,7 @@
 
 ## Quick Installation
 
-    git clone https://github.com/ekramasif/SD_Project.git
-
-    cd SD_Project/
+    git clone https://github.com/mahkis/holding_admin.git
     
 ### Composer Install
 
@@ -20,7 +18,7 @@
     cp .env.example .env
  
     
- ### For Migration table in database [Create database name as ```sdproject```]
+ ### For Migration table in database 
  
     php artisan migrate
     
@@ -28,8 +26,8 @@
 
     php artisan serve
 
-## Our valuable team👩‍💻👨‍💻 :
+## Developer:
 
 <p align="center">
-  <img src="https://contributors-img.web.app/image?repo=ekramasif/SD_Project" />
+  <img src="https://contributors-img.web.app/image?repo=mahkis/holding_admin" />
 </p>
