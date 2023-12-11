@@ -19,7 +19,7 @@
                             <br>
 {{--                            {{ $certificate }}--}}
                             <img
-                                src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(400)->generate('https://127.0.0.1:8000//check-certificate/'.$certificate->uuid)) !!} ">
+                                src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(400)->generate('https://admin.holding.uz/check-certificate/'.$certificate->uuid)) !!} ">
 
 
                         </div>
