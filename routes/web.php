@@ -24,6 +24,7 @@ Route::get('/all-certificates', [CertificateController::class, 'certificatesData
 Route::get('/new-certificate', [CertificateController::class, 'newFormData'])->middleware(['auth'])->name('new.certificate');
 Route::post('/insert-new-certificate', [CertificateController::class, 'store'])->middleware(['auth']);
 
+Route::get('/show-certificate/{id}', [CertificateController::class, 'show'])->middleware(['auth'])->name('show.certificate');
 Route::get('/edit-certificate/{id}', [CertificateController::class, 'editFormData'])->middleware(['auth'])->name('edit.certificate');
 Route::put('/update-certificate/{id}', [CertificateController::class, 'edit'])->middleware(['auth'])->name('update.certificate');
 

@@ -50,18 +50,19 @@
 
                             <td width="100" class="text-center align-items-center">
 {{--                                                                <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate('https://admin.holding.uz/check-certificate/'.$row->uuid)) !!} ">--}}
-                                <button class="btn btn-sm btn-outline-success mb-1"
-                                        onclick="loadQrcodeModal({{ $row->id }})">
-                                    <i class="fa fa-2x fa-qrcode "></i>
-                                </button>
-                            </td>
-                            <td>
+                                <a class="btn btn-sm btn-outline-info mb-1"
+                                   href="{{ route('show.certificate', $row->uuid)}}">
+                                    QR code <i class="fas fa-eye"></i>
+                                </a>
+
                                 @if($row->file_id)
                                     <a href="{{url('/download-certificate/'.$row->id)}}"
                                        class="btn btn-sm btn-info mb-1">
-                                        <i class="fa fa-download"></i>
+                                        Certificate <i class="fa fa-download"></i>
                                     </a>
                                 @endif
+                            </td>
+                            <td>
                                 <a class="btn btn-sm btn-outline-info mb-1"
                                    href="{{ route('edit.certificate', $row->id)}}">
                                     <i class="fas fa-pen"></i>

@@ -73,10 +73,12 @@ class CertificateController extends Controller
 
     }
 
-    public function show($id)
+    public function show($uuid)
     {
-        $model = $this->model->query()->find($id);
-        return $model ?? response('Not found', 404);
+        $certificate = $this->model->query()->where('uuid', $uuid)->first();
+        return view('Admin.show_certificate', compact('certificate', $certificate));
+
+//        return $model ?? response('Not found', 404);
     }
 
     public function edit($id, CertificateUpdateRequest $request)
