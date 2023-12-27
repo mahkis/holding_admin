@@ -115,7 +115,7 @@
             </div>
         </div>
     </div>
-
+            {{$certificates->links()}}
 @endsection
 
 @section('script')
