@@ -42,7 +42,7 @@ class CertificateController extends Controller
 
     public function certificatesData()
     {
-        $certificates = Certificate::all();
+        $certificates = Certificate::paginate(10)->onEachSide(0);
         return view('Admin.all_certificates', compact('certificates'));
     }
 
